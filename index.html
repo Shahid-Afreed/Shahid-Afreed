@@ -784,6 +784,8 @@
           // Basic validation
           if (!name || !email || !subject || !message) {
               errorMessage.textContent = 'Please fill in all fields.';
+              errorMessage.style.color = 'red'; // Set text color to red
+              hideMessagesAfterDelay(errorMessage);
               return; // Stop execution if validation fails
           }
   
@@ -791,6 +793,8 @@
           const namePattern = /^[A-Za-z\s]{2,50}$/; // Only letters and spaces, 2-50 characters
           if (!namePattern.test(name)) {
               errorMessage.textContent = 'Name must be 2-50 characters long and contain only letters and spaces.';
+              errorMessage.style.color = 'red'; // Set text color to red
+              hideMessagesAfterDelay(errorMessage);
               return; // Stop execution if validation fails
           }
   
@@ -811,14 +815,19 @@
           .then(result => {
               if (result.result === "success") {
                   sentMessage.style.display = 'block'; // Show success message
+                  hideMessagesAfterDelay(sentMessage); // Hide after 10 seconds
                   this.reset(); // Reset form fields
               } else {
                   errorMessage.textContent = 'There was an error sending your message. Please try again.';
+                  errorMessage.style.color = 'red'; // Set text color to red
+                  hideMessagesAfterDelay(errorMessage);
               }
           })
           .catch(error => {
               console.error('Error:', error);
               errorMessage.textContent = 'There was an error sending your message. Please try again.';
+              errorMessage.style.color = 'red'; // Set text color to red
+              hideMessagesAfterDelay(errorMessage);
           })
           .finally(() => {
               loading.style.display = 'none'; // Hide loading message
@@ -837,10 +846,18 @@
           // Validate the name on input
           if (name && !namePattern.test(name)) {
               errorMessage.style.color = 'red'; // Set the text color to red
-
               errorMessage.textContent = 'Name must be 2-50 characters long and contain only letters and spaces.';
+              hideMessagesAfterDelay(errorMessage); // Hide after 10 seconds
           }
       });
+  
+      // Function to hide messages after 10 seconds
+      function hideMessagesAfterDelay(messageElement) {
+          setTimeout(() => {
+              messageElement.textContent = ''; // Clear the message
+              messageElement.style.display = 'none'; // Optionally hide the element
+          }, 10000); // 10 seconds
+      }
   </script>
   
   
